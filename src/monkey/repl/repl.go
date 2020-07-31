@@ -3,6 +3,7 @@ package repl
 import (
 	"bufio"
 	"fmt"
+	"github.com/0keita/writing-an-interpreter-in-go/src/monkey/evaluator"
 	"github.com/0keita/writing-an-interpreter-in-go/src/monkey/lexer"
 	"github.com/0keita/writing-an-interpreter-in-go/src/monkey/parser"
 	"io"
@@ -30,8 +31,11 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		io.WriteString(out, program.String())
-		io.WriteString(out, "\n")
+		evaluated := evaluator.Eval(program)
+		if evaluated != nil {
+			io.WriteString(out, evaluated.Inspect())
+			io.WriteString(out, "\n")
+		}
 	}
 }
 
